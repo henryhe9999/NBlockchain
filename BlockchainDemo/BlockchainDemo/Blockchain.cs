@@ -8,6 +8,7 @@ namespace BlockchainDemo
     public class Blockchain
     {
         IList<Block> _chain = new List<Block>();
+        int _difficulty = 2;
 
         public IList<Block> Chain
         {
@@ -24,8 +25,8 @@ namespace BlockchainDemo
 
         public Block CreateGenesisBlock()
         {
-            Block block = new Block(DateTime.Now, "Genesis Block");
-            block.Hash = block.CalculateHash();
+            Block block = new Block(0, DateTime.Now, "Genesis Block");
+            block.Mine(_difficulty);
 
             return block;
         }
@@ -34,9 +35,8 @@ namespace BlockchainDemo
         {
             if (_chain.Count > 0)
             {
-                block.Index = _chain[_chain.Count - 1].Index + 1;
                 block.PreviousHash = _chain[_chain.Count - 1].Hash;
-                block.Hash = block.CalculateHash();
+                block.Mine(_difficulty);
             }
             _chain.Add(block);
         }

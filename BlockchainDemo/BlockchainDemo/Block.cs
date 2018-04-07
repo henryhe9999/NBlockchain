@@ -20,10 +20,6 @@ namespace BlockchainDemo
             {
                 return _index;
             }
-            set
-            {
-                _index = value;
-            }
         }
 
         public string PreviousHash
@@ -69,7 +65,7 @@ namespace BlockchainDemo
             }
         }
 
-        public Block(DateTime timeStamp, string data)
+        public Block(int index, DateTime timeStamp, string data)
         {
             _index = 0;
             _timeStamp = timeStamp;
@@ -88,8 +84,13 @@ namespace BlockchainDemo
             return Convert.ToBase64String(outputBytes);
         }
 
-
-
-
+        public void Mine(int difficulty)
+        {
+            while (this.Hash == null || this.Hash.Substring(0, difficulty) != new string('0', difficulty))
+            {
+                this._nonce++;
+                this.Hash = this.CalculateHash();
+            }
+        }
     }
 }

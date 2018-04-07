@@ -8,8 +8,8 @@ namespace BlockchainDemo
         static void Main(string[] args)
         {
             Blockchain blockchain = new Blockchain();
-            blockchain.AddBlock(new Block(DateTime.Now, "{ sender: 'Henry', receiver: 'John', amount: 5}"));
-            blockchain.AddBlock(new Block(DateTime.Now, "{ sender: 'Henry', receiver: 'John', amount: '10'}"));
+            blockchain.AddBlock(new Block(1, DateTime.Now, "{ sender: 'Henry', receiver: 'John', amount: 5}"));
+            blockchain.AddBlock(new Block(2, DateTime.Now, "{ sender: 'Henry', receiver: 'John', amount: '10'}"));
 
             Console.WriteLine(JsonConvert.SerializeObject(blockchain, Formatting.Indented));
 
