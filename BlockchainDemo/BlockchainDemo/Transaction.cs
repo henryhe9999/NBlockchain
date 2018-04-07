@@ -6,8 +6,15 @@ namespace BlockchainDemo
 {
     public class Transaction
     {
-        public string Sender { get; set; }
-        public string Receiver { get; set; }
+        public string FromAddress { get; set; }
+        public string ToAddress { get; set; }
         public int Amount { get; set; }
+
+        public Transaction(string fromAddress, string toAddress, int amount)
+        {
+            FromAddress = fromAddress;
+            ToAddress = toAddress;
+            Amount = amount;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace BlockchainDemo
 {
@@ -7,21 +8,34 @@ namespace BlockchainDemo
     {
         static void Main(string[] args)
         {
-            Blockchain blockchain = new Blockchain();
-            blockchain.AddBlock(new Block(1, DateTime.Now, "{ sender: 'Henry', receiver: 'John', amount: 5}"));
-            blockchain.AddBlock(new Block(2, DateTime.Now, "{ sender: 'Henry', receiver: 'John', amount: '10'}"));
+            Blockchain heCoin = new Blockchain();
+            heCoin.CreateTransaction(new Transaction("Henry", "John", 50));
+            heCoin.ProcessPendingTransactions("Andy");
 
-            Console.WriteLine(JsonConvert.SerializeObject(blockchain, Formatting.Indented));
+            heCoin.CreateTransaction(new Transaction("Henry", "John", 100));
+            heCoin.ProcessPendingTransactions("Brian");
 
-            Console.WriteLine($"Is blockchain valid: {blockchain.Validate()}");
+            heCoin.ProcessPendingTransactions("Carly");
+ 
+            Console.WriteLine(JsonConvert.SerializeObject(heCoin, Formatting.Indented));
 
-            blockchain.Chain[1].Data = "{ sender: 'Henry', receiver: 'John', amount: 100}";
+            Console.WriteLine($"Henry's balance: {heCoin.GetBalance("Henry")}");
+            Console.WriteLine($"John's balance: {heCoin.GetBalance("John")}");
+            Console.WriteLine($"Andy's balance: {heCoin.GetBalance("Andy")}");
+            Console.WriteLine($"Brian's balance: {heCoin.GetBalance("Brian")}");
+            Console.WriteLine($"Carly's balance: {heCoin.GetBalance("Carly")}");
 
-            Console.WriteLine($"Is blockchain still valid: {blockchain.Validate()}");
+            Console.WriteLine($"Is blockchain valid: {heCoin.Validate()}");
 
-            blockchain.Chain[1].Hash = blockchain.Chain[1].CalculateHash();
+            var fakeTransaction = new List<Transaction>();
+            fakeTransaction.Add(new Transaction("Henry", "John", 1000));
+            heCoin.Chain[1].Transactions = fakeTransaction;
 
-            Console.WriteLine($"Is blockchain valid after fixed hash: {blockchain.Validate()}");
+            Console.WriteLine($"Is blockchain still valid: {heCoin.Validate()}");
+
+            heCoin.Chain[1].Hash = heCoin.Chain[1].CalculateHash();
+
+            Console.WriteLine($"Is blockchain valid after fixed hash: {heCoin.Validate()}");
 
             Console.ReadKey();
         }
